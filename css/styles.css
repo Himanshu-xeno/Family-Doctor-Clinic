@@ -10,7 +10,8 @@
   --color-muted: #6b7280;
   /* gray-500 */
   --radius: 0.75rem;
-  --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  /* refined, softer elevation for a more professional look */
+  --shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
 }
 
 *,
@@ -29,6 +30,8 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.6;
+  /* improve font rendering on mobile */
+  -webkit-text-size-adjust: 100%;
 }
 
 /* Layout */
@@ -36,6 +39,9 @@ body {
   max-width: 1100px;
   margin-inline: auto;
   padding: 1rem;
+  /* allow comfortable side padding on small screens */
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
 }
 
 header {
@@ -44,7 +50,9 @@ header {
   z-index: 50;
   background: var(--color-bg);
   border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+  /* elevate header slightly for clarity */
+  box-shadow: 0 2px 12px rgba(2, 6, 23, 0.04);
+  padding-top: env(safe-area-inset-top);
 }
 
 .navbar {
@@ -64,7 +72,17 @@ header {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
+  /* slightly tighter to avoid wrapping too early */
+  /* better mobile usability: keep a single line with horizontal scroll */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-links a {
@@ -73,6 +91,19 @@ header {
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   transition: background 0.2s, color 0.2s;
+  /* improve tap target and weight slightly */
+  font-weight: 600;
+}
+
+/* accessible focus-visible treatment */
+.nav-links a:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-primary), white 20%);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
 .nav-links a:hover {
@@ -89,12 +120,16 @@ footer {
   border-top: 1px solid #e5e7eb;
   margin-top: 2rem;
   background: #f9fafb;
+  /* add subtle depth separation */
+  box-shadow: 0 -1px 0 rgba(2, 6, 23, 0.02);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .footer-inner {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
+  /* slightly tighter */
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
@@ -110,6 +145,11 @@ footer {
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.05s ease, box-shadow 0.2s ease, background 0.2s ease;
+  /* ensure comfortable tap targets on mobile */
+  min-height: 44px;
+  letter-spacing: 0.2px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .btn:active {
@@ -124,15 +164,19 @@ footer {
 
 .btn-primary:hover {
   background: #0284c7;
+  /* subtle lift on hover (desktop) */
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
   background: #e5e7eb;
   color: var(--color-text);
+  box-shadow: 0 1px 0 rgba(2, 6, 23, 0.04);
 }
 
 .btn-secondary:hover {
   background: #d1d5db;
+  transform: translateY(-1px);
 }
 
 /* Hero and Scrolling Ticker */
@@ -178,30 +222,34 @@ footer {
   background: #f3f4f6;
   border: 1px solid #e5e7eb;
   border-radius: var(--radius);
-  height: 340px;
+  /* responsive aspect instead of fixed height */
+  aspect-ratio: 16 / 10;
+  min-height: 220px;
+  max-height: 420px;
   display: grid;
   place-items: center;
   color: var(--color-muted);
   text-align: center;
   padding: 0;
-
+  overflow: hidden;
+  /* ensure image stays clipped to radius */
 }
 
 .photo-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Fill the box while keeping aspect ratio */
   border-radius: var(--radius);
-  /* Optional: match the box corners */
-
 }
 
 .photo-box1 {
   background: #f3f4f6;
   border: 1px solid #e5e7eb;
   border-radius: var(--radius);
-  height: 340px;
+  /* responsive aspect for contact image */
+  aspect-ratio: 16 / 10;
+  min-height: 220px;
+  max-height: 420px;
   display: grid;
   place-items: center;
   color: var(--color-muted);
@@ -214,10 +262,7 @@ footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Fill the box while keeping aspect ratio */
   border-radius: var(--radius);
-  /* Optional: match the box corners */
-
 }
 
 /* Scrolling ticker (marquee-like) */
@@ -258,19 +303,11 @@ footer {
   }
 }
 
-/* Sections */
-.section {
-  padding-block: clamp(2rem, 6vw, 4rem);
-}
-
-.section h2 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  margin-bottom: 0.5rem;
-}
-
-.section p.lead {
-  color: var(--color-muted);
-  margin-top: 0;
+/* respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
 }
 
 /* Grid utilities */
@@ -306,6 +343,16 @@ footer {
   padding: 1rem;
   background: var(--color-bg);
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+  /* subtle polish and hover animation */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: color-mix(in oklab, var(--color-primary), #e5e7eb 70%);
 }
 
 .card h3 {
@@ -353,6 +400,8 @@ textarea {
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   background: #fff;
+  /* prevent iOS zoom on focus */
+  font-size: 16px;
 }
 
 input:focus,
@@ -422,7 +471,8 @@ textarea:focus {
     visibility: hidden;
   }
 
-  #print-area, #print-area * {
+  #print-area,
+  #print-area * {
     visibility: visible;
   }
 
@@ -432,11 +482,65 @@ textarea:focus {
     padding: 1rem;
   }
 
-  header, footer {
+  header,
+  footer {
     display: none !important;
   }
 
   .no-print {
     display: none !important;
+  }
+}
+
+/* make all images responsive by default */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ensure headings scale down gracefully on small devices */
+@media (max-width: 420px) {
+  .brand h2 {
+    font-size: 1.125rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+  }
+}
+
+/* add section spacing and lead text for consistent vertical rhythm and readability */
+.section {
+  padding-block: clamp(2rem, 6vw, 4rem);
+}
+
+.lead {
+  color: var(--color-muted);
+  margin: 0.25rem 0 1rem 0;
+  max-width: 65ch;
+}
+
+/* refine heading sizes for better scaling across devices */
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  margin: 0 0 0.5rem 0;
+}
+
+h3 {
+  font-size: clamp(1.125rem, 2.8vw, 1.25rem);
+  margin: 0.25rem 0 0.25rem 0;
+}
+
+/* slightly increase card padding on larger screens for a premium feel */
+@media (min-width: 900px) {
+  .card {
+    padding: 1.25rem;
   }
 }
