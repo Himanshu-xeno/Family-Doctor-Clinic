@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your Family Clinic — Contact</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+    <meta
+      name="description"
+      content="Find our address, phone, and email. Contact Your Family Clinic."
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <div class="brand"><h2>Your Family Clinic</h2></div>
+        <nav class="nav-links" aria-label="Primary Navigation">
+          <a href="index.html">Home</a>
+          <a href="doctors.html">Doctors</a>
+          <a href="appointment.html">Appointment</a>
+          <a class="active" href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container section">
+      <h1>Contact Us</h1>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Clinic Address</h3>
+          <p>Parel Village<br />Sant Gora Kumbhar Chowk </br>Mumbai </p>
+          <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+          <p><strong>Email:</strong> hello@yourfamilyclinic.com</p>
+          <p>
+            <a
+              class="btn btn-primary"
+              href="https://maps.app.goo.gl/gC82eBK1s2WivHxY9"
+              target="_blank"
+              rel="noopener"
+              >Open in Google Maps</a
+            >
+          </p>
+        </div>
+        <div class="photo-box1">
+          <img src="images/main.jpg" alt="Clinic Photo" />
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container footer-inner">
+        <span>&copy; <span id="year"></span> Your Family Clinic</span>
+        <!-- <span class="meta">Mon–Sun · 9 AM – 9 PM</span> -->
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

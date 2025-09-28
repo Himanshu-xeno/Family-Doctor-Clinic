@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your Family Clinic — Doctors</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+    <meta
+      name="description"
+      content="Meet our experienced doctors and their fixed timings."
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <div class="brand"><h2>Your Family Clinic</h2></div>
+        <nav class="nav-links" aria-label="Primary Navigation">
+          <a href="index.html">Home</a>
+          <a class="active" href="doctors.html">Doctors</a>
+          <a href="appointment.html">Appointment</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container section">
+      <h1>Our Doctors</h1>
+      <p class="lead">Skilled, caring, and committed to your health.</p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Dr. M.K. Nayak</h3>
+          <p class="meta">General Physician</p>
+          <p><strong>Fixed Timings:</strong> 10:00 AM – 1:00 PM</p>
+          <p>
+            With a focus on comprehensive care, Dr. M.K. Nayak supports all age
+            groups.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Dr. B.M. Nayak</h3>
+          <p class="meta">Specialist</p>
+          <p><strong>Fixed Timings:</strong> 5:00 PM – 8:00 PM</p>
+          <p>
+            Known for a patient-first approach and careful attention to detail.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container footer-inner">
+        <span>&copy; <span id="year"></span> Your Family Clinic</span>
+        <!-- <span class="meta">Mon–Sun · 9 AM – 9 PM</span> -->
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
