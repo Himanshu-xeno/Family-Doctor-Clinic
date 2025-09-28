@@ -9,11 +9,14 @@
   /* gray-900 */
   --color-muted: #6b7280;
   /* gray-500 */
+
   --radius: 0.75rem;
-  /* refined, softer elevation for a more professional look */
+  --shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.06);
   --shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
+  --shadow-lg: 0 16px 48px rgba(2, 6, 23, 0.12);
 }
 
+/* Reset */
 *,
 *::before,
 *::after {
@@ -30,8 +33,15 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.6;
-  /* improve font rendering on mobile */
   -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+/* Images are responsive by default */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* Layout */
@@ -48,11 +58,11 @@ header {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--color-bg);
+  background: rgba(255, 255, 255, 0.85);
   border-bottom: 1px solid #e5e7eb;
-  /* elevate header slightly for clarity */
-  box-shadow: 0 2px 12px rgba(2, 6, 23, 0.04);
+  box-shadow: 0 2px 12px rgba(2, 6, 23, 0.05);
   padding-top: env(safe-area-inset-top);
+  backdrop-filter: saturate(160%) blur(8px);
 }
 
 .navbar {
@@ -64,21 +74,25 @@ header {
 }
 
 .brand {
-  font-weight: 700;
-  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 800;
   letter-spacing: 0.2px;
+  color: var(--color-primary);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  /* slightly tighter to avoid wrapping too early */
-  /* better mobile usability: keep a single line with horizontal scroll */
   flex-wrap: nowrap;
+  /* prevent line breaks */
   overflow-x: auto;
+  /* enable horizontal scroll on small screens */
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  scroll-snap-type: x proximity;
 }
 
 .nav-links::-webkit-scrollbar {
@@ -90,9 +104,26 @@ header {
   color: var(--color-text);
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
-  transition: background 0.2s, color 0.2s;
-  /* improve tap target and weight slightly */
   font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  scroll-snap-align: center;
+}
+
+.nav-links a:hover {
+  background: #f3f4f6;
+}
+
+@media (any-hover: hover) {
+  .nav-links a:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.nav-links a.active {
+  color: var(--color-bg);
+  background: var(--color-primary);
+  box-shadow: var(--shadow-sm);
 }
 
 /* accessible focus-visible treatment */
@@ -113,6 +144,7 @@ textarea:focus-visible {
 .nav-links a.active {
   color: var(--color-bg);
   background: var(--color-primary);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Footer */
@@ -142,10 +174,9 @@ footer {
   border: none;
   border-radius: var(--radius);
   padding: 0.75rem 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform 0.05s ease, box-shadow 0.2s ease, background 0.2s ease;
-  /* ensure comfortable tap targets on mobile */
+  transition: transform 0.05s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
   min-height: 44px;
   letter-spacing: 0.2px;
   -webkit-tap-highlight-color: transparent;
@@ -156,27 +187,35 @@ footer {
   transform: translateY(1px);
 }
 
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-primary {
   background: var(--color-primary);
   color: var(--color-bg);
   box-shadow: var(--shadow);
 }
 
-.btn-primary:hover {
-  background: #0284c7;
-  /* subtle lift on hover (desktop) */
-  transform: translateY(-1px);
+@media (any-hover: hover) {
+  .btn-primary:hover {
+    background: #0284c7;
+    transform: translateY(-1px);
+  }
 }
 
 .btn-secondary {
   background: #e5e7eb;
   color: var(--color-text);
-  box-shadow: 0 1px 0 rgba(2, 6, 23, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
-.btn-secondary:hover {
-  background: #d1d5db;
-  transform: translateY(-1px);
+@media (any-hover: hover) {
+  .btn-secondary:hover {
+    background: #d1d5db;
+    transform: translateY(-1px);
+  }
 }
 
 /* Hero and Scrolling Ticker */
@@ -218,7 +257,8 @@ footer {
 }
 
 /* Image placeholder box */
-.photo-box {
+.photo-box,
+.photo-box1 {
   background: #f3f4f6;
   border: 1px solid #e5e7eb;
   border-radius: var(--radius);
@@ -233,31 +273,10 @@ footer {
   padding: 0;
   overflow: hidden;
   /* ensure image stays clipped to radius */
+  box-shadow: var(--shadow-sm);
 }
 
-.photo-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: var(--radius);
-}
-
-.photo-box1 {
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  border-radius: var(--radius);
-  /* responsive aspect for contact image */
-  aspect-ratio: 16 / 10;
-  min-height: 220px;
-  max-height: 420px;
-  display: grid;
-  place-items: center;
-  color: var(--color-muted);
-  text-align: center;
-  padding: 0;
-  overflow: hidden;
-}
-
+.photo-box img,
 .photo-box1 img {
   width: 100%;
   height: 100%;
@@ -349,10 +368,12 @@ footer {
   touch-action: manipulation;
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-  border-color: color-mix(in oklab, var(--color-primary), #e5e7eb 70%);
+@media (any-hover: hover) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    border-color: color-mix(in oklab, var(--color-primary), #e5e7eb 70%);
+  }
 }
 
 .card h3 {
@@ -363,6 +384,12 @@ footer {
 .meta {
   color: var(--color-muted);
   font-size: 0.95rem;
+}
+
+@media (min-width: 900px) {
+  .card {
+    padding: 1.25rem;
+  }
 }
 
 /* Forms */
@@ -398,7 +425,7 @@ textarea {
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   background: #fff;
   /* prevent iOS zoom on focus */
   font-size: 16px;
@@ -492,13 +519,6 @@ textarea:focus {
   }
 }
 
-/* make all images responsive by default */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
 /* ensure headings scale down gracefully on small devices */
 @media (max-width: 420px) {
   .brand h2 {
@@ -526,11 +546,12 @@ h1,
 h2,
 h3 {
   line-height: 1.2;
+  margin: 0;
 }
 
 h2 {
   font-size: clamp(1.5rem, 3.5vw, 2rem);
-  margin: 0 0 0.5rem 0;
+  margin-bottom: 0.5rem;
 }
 
 h3 {
@@ -543,4 +564,33 @@ h3 {
   .card {
     padding: 1.25rem;
   }
+}
+
+/* Accent underline for section titles (works if h2 is first child) */
+.section>h2:first-child,
+.container>h2:first-child {
+  position: relative;
+  padding-bottom: 0.4rem;
+}
+
+.section>h2:first-child::after,
+.container>h2:first-child::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 999px;
+}
+
+/* Links inside content */
+main a:not(.btn):not(.nav-links a) {
+  color: var(--color-primary);
+  text-underline-offset: 3px;
+}
+
+main a:not(.btn):hover {
+  text-decoration: underline;
 }
